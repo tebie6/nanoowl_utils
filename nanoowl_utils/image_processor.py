@@ -59,21 +59,23 @@ class ImageProcessor:
 
     def _convert_output_to_json(self, output):
         try:
-            # 将输出转换为 JSON 格式
-            result = []
-            if isinstance(output, TreeOutput):
-                label_map = self.tree.get_label_map()
-                for detection in output.detections:
-                    detection_info = {
-                        "detection_id": detection.id,
-                        "parent_id": detection.parent_id,
-                        "box": detection.box,
-                        "labels_scores": [
-                            {"label": label_map[label], "score": score}
-                            for label, score in zip(detection.labels, detection.scores)
-                        ]
-                    }
-                    result.append(detection_info)
+            if not isinstance(output, TreeOutput):
+                return json.dumps([])  # 如果输出不是 TreeOutput 实例，返回空的 JSON 数组
+
+            label_map = self.tree.get_label_map()
+            result = [
+                {
+                    "detection_id": detection.id,
+                    "parent_id": detection.parent_id,
+                    "box": detection.box,
+                    "labels_scores": [
+                        {"label": label_map[label], "score": score}
+                        for label, score in zip(detection.labels, detection.scores)
+                    ]
+                }
+                for detection in output.detections
+            ]
+
             return json.dumps(result, indent=4)
         except Exception as e:
             print(f"将输出转换为 JSON 时出错: {e}")

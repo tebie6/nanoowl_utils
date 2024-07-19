@@ -6,6 +6,10 @@ nanoowl_utils
 
 以下示例展示了如何使用封装的 `ImageProcessor` 工具类。
 
+```bash
+pip install git+https://github.com/tebie6/nanoowl_utils.git
+```
+
 ## 示例代码
 
 ```python
