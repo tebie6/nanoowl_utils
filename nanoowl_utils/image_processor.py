@@ -12,7 +12,7 @@ import os
 
 class ImageProcessor:
     def __init__(self,
-                 prompt="[a person(sitting,stand)(waving,not wave)]",
+                 prompt="(seated,standing)(waving,not wave)",
                  threshold=0.15,
                  model="google/owlvit-base-patch32",
                  image_encoder_engine="/opt/nanoowl/data/owl_image_encoder_patch32.engine"):
