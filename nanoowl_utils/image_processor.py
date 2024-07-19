@@ -59,6 +59,28 @@ class ImageProcessor:
             print(f"处理图片时出错: {e}")
             raise
 
+    def process_image(self, image, output_format="json"):
+
+        try:
+            # 预测输出
+            output = self.predictor.predict(
+                image=image,
+                tree=self.tree,
+                clip_text_encodings=self.clip_text_encodings,
+                owl_text_encodings=self.owl_text_encodings,
+                threshold=self.threshold
+            )
+
+            # 根据指定格式转换输出
+            if output_format == "json":
+                return self._convert_output_to_json(output)
+            return output
+        except FileNotFoundError:
+            print("未找到指定的图片文件")
+        except Exception as e:
+            print(f"处理图片时出错: {e}")
+            raise
+
     def _convert_output_to_json(self, output):
         try:
             if not isinstance(output, TreeOutput):
