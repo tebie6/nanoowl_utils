@@ -36,7 +36,7 @@ class ImageProcessor:
             print(f"初始化 ImageProcessor 时出错: {e}")
             raise
 
-    def process_single_image(self, image_path):
+    def process_single_image(self, image_path, output_type="json"):
 
         try:
             # 处理单张图片
@@ -49,7 +49,9 @@ class ImageProcessor:
                 threshold=self.threshold
             )
 
-            output = self._convert_output_to_json(output)
+            if output_type == "json":
+                output = self._convert_output_to_json(output)
+
             return output
         except FileNotFoundError:
             print(f"未找到指定的图片文件: {image_path}")
