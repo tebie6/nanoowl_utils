@@ -74,6 +74,8 @@ class ImageProcessor:
             # 根据指定格式转换输出
             if output_format == "json":
                 return self._convert_output_to_json(output)
+            elif output_format == "text":
+                return self._convert_output_to_text(output)
             return output
         except FileNotFoundError:
             print("未找到指定的图片文件")
@@ -103,4 +105,22 @@ class ImageProcessor:
             return json.dumps(result, indent=4)
         except Exception as e:
             print(f"将输出转换为 JSON 时出错: {e}")
+            raise
+
+    def _convert_output_to_text(self, output):
+        try:
+            if not isinstance(output, TreeOutput):
+                return ""  # 如果输出不是 TreeOutput 实例，返回空的字符串
+
+            label_map = self.tree.get_label_map()
+            result = []
+
+            for detection in output.detections:
+                for label in detection.labels:
+                    label_text = label_map.get(label, "Unknown Label")
+                    result.append(label_text)
+
+            return "\n".join(result) + "\n" if result else ""
+        except Exception as e:
+            print(f"将输出转换为 text 时出错: {e}")
             raise
