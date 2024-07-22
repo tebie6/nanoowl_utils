@@ -116,7 +116,7 @@ class ImageProcessor:
             result = []
 
             for detection in output.detections:
-                for label in detection.labels:
+                for label in detection.labels[1:]:  # 跳过第一个 label
                     label_text = label_map.get(label, "Unknown Label")
                     result.append(label_text)
 
