@@ -12,7 +12,7 @@ import os
 
 class ImageProcessor:
     def __init__(self,
-                 prompt="(seated,standing)(signaled,no wave)",
+                 prompt="(seated,standing)(waving,no wave)",
                  threshold=0.15,
                  model="google/owlvit-base-patch32",
                  image_encoder_engine="/opt/nanoowl/data/owl_image_encoder_patch32.engine"):
@@ -120,7 +120,7 @@ class ImageProcessor:
                     label_text = label_map.get(label, "Unknown Label")
                     result.append(label_text)
 
-            return ", ".join(result) + "\n" if result else ""
+            return ", ".join(result) + "" if result else ""
         except Exception as e:
             print(f"将输出转换为 text 时出错: {e}")
             raise
