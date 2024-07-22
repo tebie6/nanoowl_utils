@@ -120,7 +120,7 @@ class ImageProcessor:
                     label_text = label_map.get(label, "Unknown Label")
                     result.append(label_text)
 
-            return "\n".join(result) + "\n" if result else ""
+            return ", ".join(result) + "\n" if result else ""
         except Exception as e:
             print(f"将输出转换为 text 时出错: {e}")
             raise
