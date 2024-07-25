@@ -13,12 +13,14 @@ import os
 class ImageProcessor:
     def __init__(self,
                  prompt="(seated,standing)(waving,no wave)",
+                 group_key=["seated", "waving"],
                  threshold=0.15,
                  model="google/owlvit-base-patch32",
                  image_encoder_engine="/opt/nanoowl/data/owl_image_encoder_patch32.engine"):
         try:
             # 初始化参数
             self.prompt = prompt
+            self.group_key = group_key
             self.threshold = threshold
             self.model = model
             self.image_encoder_engine = image_encoder_engine
@@ -105,6 +107,25 @@ class ImageProcessor:
             return json.dumps(result, indent=4)
         except Exception as e:
             print(f"将输出转换为 JSON 时出错: {e}")
+            raise
+
+    def _convert_output_to_group(self, output):
+        try:
+            if not isinstance(output, TreeOutput):
+                return ""  # 如果输出不是 TreeOutput 实例，返回空的字符串
+
+            label_map = self.tree.get_label_map()
+            result = {}
+
+            for detection in output.detections:
+                for index, label in enumerate(detection.labels[1:], start=1):  # 跳过第一个 label 并从 1 开始索引
+                    label_text = label_map.get(label, "Unknown Label")
+                    key = self.group_key[index - 1]  # 调整索引以匹配 group_key
+                    result["is_" + key] = (label_text == key)  # 直接比较并赋值
+
+            return result
+        except Exception as e:
+            print(f"Error: {e}")
             raise
 
     def _convert_output_to_text(self, output):
