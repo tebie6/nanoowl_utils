@@ -78,6 +78,8 @@ class ImageProcessor:
                 return self._convert_output_to_json(output)
             elif output_format == "text":
                 return self._convert_output_to_text(output)
+            elif output_format == "group":
+                return self._convert_output_to_group(output)
             return output
         except FileNotFoundError:
             print("未找到指定的图片文件")
